@@ -30,6 +30,7 @@ a.btn{display:block;text-align:center;text-decoration:none}
 </head>
 <body>
 <main><h1 id="tit">Catálogo</h1><div id="mesa"></div><a class="hid" id="rem" onclick="openRemote()">¿No estás en el local? Reservá una mesa o pedí para retirar</a><p id="vacio" class="mu"></p><div class="chips" id="chips"></div><div id="grid"></div></main>
+<p class="mu" style="text-align:center;font-size:12px;padding:0 16px 90px"><a href="legal.html#terminos" target="_blank">Términos</a> · <a href="legal.html#privacidad" target="_blank">Privacidad</a></p>
 <div class="bar" id="bar" style="display:none"><button class="btn" id="bt" onclick="openCart()"></button></div>
 <dialog id="dlg"><div id="cb"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -63,7 +64,7 @@ const show=h=>{$('#cb').innerHTML=h;if(!$('#dlg').open)$('#dlg').showModal()};
 const msg=(t,ok)=>{$('#cm').className=ok?'ok':'er';$('#cm').textContent=t};
 const hp='<input class="hp" id="c_h" tabindex="-1" autocomplete="off">';
 const fin=(t,clear)=>{if(clear){C={};draw()}show(`<h2>¡Listo!</h2><p class="ok">${t}</p><button class="btn" onclick="$('#dlg').close()">Cerrar</button>`)};
-const datos='<label>Tu nombre</label><input id="c_n" autocomplete="name"><label>Teléfono (WhatsApp)</label><input id="c_t" type="tel" autocomplete="tel">';
+const datos='<label>Tu nombre</label><input id="c_n" autocomplete="name"><label>Teléfono (WhatsApp)</label><input id="c_t" type="tel" autocomplete="tel"><p class="mu" style="font-size:12px;margin:0 0 8px">Usamos tus datos solo para gestionar este pedido o reserva. Ver la <a href="legal.html#privacidad" target="_blank">Política de Privacidad</a>.</p>';
 const cuando=(a,b)=>`<div class="two"><div><label>${a}</label><input id="c_f" type="date"></div><div><label>${b}</label><input id="c_hr" type="time"></div></div>`;
 const botonera=(txt,fn)=>`${hp}<button class="btn" id="b1" onclick="${fn}()">${txt}</button><p id="cm"></p><button class="btn g" onclick="$('#dlg').close()">Seguir viendo</button>`;
 
@@ -94,6 +95,10 @@ const{data,error}=await SB.rpc('reservar_mesa',{p_slug:slug,p_nombre:$('#c_n').v
 b.disabled=false;if(error)return msg('No se pudo enviar: '+error.message,0);
 const f=fmtF($('#c_f').value),h=$('#c_hr').value,n=$('#c_pe').value;
 fin(`Recibimos tu reserva de mesa para ${n} persona${n>1?'s':''} el ${f} a las ${h}. El local te va a escribir por WhatsApp para confirmarla.`+wa(data&&data.telefono,`Hola! Reservé una mesa para ${n} el ${f} a las ${h}.`),0)}
+(function(){try{if(localStorage.getItem('fsai_ck'))return}catch(e){}
+const b=document.createElement('div');b.style.cssText='position:fixed;left:10px;right:10px;bottom:70px;z-index:4;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:12px;padding:12px;box-shadow:0 4px 18px rgba(0,0,0,.25);font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap';
+b.innerHTML='<span style="flex:1;min-width:200px">Este sitio no usa cookies publicitarias ni de seguimiento. <a href="legal.html#privacidad" target="_blank">Más información</a></span><button class="btn" style="width:auto;margin:0" onclick="try{localStorage.setItem(\'fsai_ck\',1)}catch(e){};this.parentNode.remove()">Entendido</button>';
+document.body.appendChild(b)})();
 </script>
 </body>
 </html>
